@@ -18,16 +18,20 @@ public class Principal {
 		while(true) {
 			
 			try {
-			UI.limparTela();
-			UI.printTabuleiro(partida.getPecas());
-			System.out.println("\nOrigem:");
-			PosicaoXadrez origem = UI.lerPosicao(sc);
-			
-			System.out.println("\nDestino:");
-			PosicaoXadrez destino = UI.lerPosicao(sc);
-			
-			PecaXadrez captura = partida.mover(origem, destino);
-			
+				UI.limparTela();
+				UI.printTabuleiro(partida.getPecas());
+				System.out.println("\nOrigem:");
+				PosicaoXadrez origem = UI.lerPosicao(sc);
+				
+				boolean[][] possiveisDestinos = partida.possiveisMovimentos(origem);
+				UI.limparTela();
+				UI.printTabuleiro(partida.getPecas(), possiveisDestinos);
+				
+				System.out.println("\nDestino:");
+				PosicaoXadrez destino = UI.lerPosicao(sc);
+				
+				PecaXadrez captura = partida.mover(origem, destino);
+				
 			}catch(XadrezExcecao e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();

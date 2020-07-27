@@ -38,11 +38,11 @@ public class UI {
 	
 	public static PosicaoXadrez lerPosicao(Scanner sc) {
 		try {
-		String s = sc.nextLine();
-		char coluna = s.charAt(0);
-		int linha = Integer.parseInt(s.substring(1));
-		
-		return new PosicaoXadrez(coluna, linha);
+			String s = sc.nextLine();
+			char coluna = s.charAt(0);
+			int linha = Integer.parseInt(s.substring(1));
+			
+			return new PosicaoXadrez(coluna, linha);
 		}catch(RuntimeException e) {
 			throw new InputMismatchException("Os valores válidos são de a1 a h8");
 		}
@@ -50,26 +50,41 @@ public class UI {
 
 	public static void printTabuleiro(PecaXadrez[][] pecas) {
 		for (int i = 0; i < pecas.length; i++) {
-			System.out.print(8 - i + " ");
+			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pecas.length; j++) {
-				printPeca(pecas[i][j]);
+				printPeca(pecas[i][j], false);
+			}
+			System.out.println();
+		}
+		System.out.println("  a b c d e f g h");
+	}
+	
+	public static void printTabuleiro(PecaXadrez[][] pecas, boolean[][] possiveisMovimentos) {
+		for (int i = 0; i < pecas.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j = 0; j < pecas.length; j++) {
+				printPeca(pecas[i][j], possiveisMovimentos[i][j]);
 			}
 			System.out.println();
 		}
 		System.out.println("  a b c d e f g h");
 	}
 
-	private static void printPeca(PecaXadrez peca) {
+	private static void printPeca(PecaXadrez peca, boolean corFundo) {
+		if(corFundo) {
+			System.out.print(ANSI_BLUE_BACKGROUND);
+			
+		}
 		if (peca == null) {
-			System.out.print("- ");
+			System.out.print("-" + ANSI_RESET);
 		} else {
 			if (peca.getCor() == Cor.BRANCO) {
 				System.out.print(ANSI_WHITE + peca + ANSI_RESET);
 			}else {
 				System.out.print(ANSI_YELLOW + peca + ANSI_RESET);
-			}
-			System.out.print(" ");
+			}		
 		}
+		System.out.print(" ");
 	}
 
 }
