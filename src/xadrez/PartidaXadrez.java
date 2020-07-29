@@ -1,5 +1,8 @@
 package xadrez;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tabuleiro.Peca;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
@@ -8,11 +11,25 @@ import xadrez.pecas.Torre;
 
 public class PartidaXadrez {
 
+	private int turno;
+	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
+	
+	private List<Peca> pecasTabuleiro = new ArrayList<>();
+	private List<Peca> pecasCapturadas = new ArrayList<>();
 
 	public PartidaXadrez() {
+		turno = 1;
+		jogadorAtual = Cor.BRANCO;
 		tabuleiro = new Tabuleiro(8, 8);
 		inicio();
+	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	public Cor getJogadorAtual() {
+		return jogadorAtual;
 	}
 
 	public PecaXadrez[][] getPecas() {
@@ -39,6 +56,7 @@ public class PartidaXadrez {
 		validarPosicaoOrigem(ori);
 		validarPosicaoDestino(ori, desti);
 		Peca pecaCapturada = movendo(ori, desti);
+		proximoTurno();
 		
 		return (PecaXadrez)pecaCapturada;		
 	}
@@ -48,12 +66,20 @@ public class PartidaXadrez {
 		Peca pecaCapturada = tabuleiro.removePeca(destino);
 		tabuleiro.colocarPeca(p, destino);
 		
+		if(pecaCapturada != null) {
+			pecasTabuleiro.remove(pecaCapturada);
+			pecasCapturadas.add(pecaCapturada);
+		}
+		
 		return pecaCapturada;
 	}
 	
 	private void validarPosicaoOrigem(Posicao posicao) {
 		if(!tabuleiro.temPeca(posicao)) {
 			throw new XadrezExcecao("Não existe peça nessa posição");
+		}
+		if(jogadorAtual != ((PecaXadrez) tabuleiro.peca(posicao)).getCor()) {
+			throw new XadrezExcecao("Peca escolhida nao e sua");
 		}
 		if(!tabuleiro.peca(posicao).UmMovimento()) {
 			throw new XadrezExcecao("Nao tem movimento possivel");
@@ -65,9 +91,15 @@ public class PartidaXadrez {
 			throw new XadrezExcecao("A peca escolhida nao pode movintar para o destino escolhido");
 		}
 	}
+	
+	public void proximoTurno() {
+		turno++;
+		jogadorAtual = (jogadorAtual == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+	}
 
 	private void novaPeca(char coluna, int linha, PecaXadrez peca) {
 		tabuleiro.colocarPeca(peca, new PosicaoXadrez(coluna, linha).conversao());
+		pecasTabuleiro.add(peca);
 	}
 
 	private void inicio() {
