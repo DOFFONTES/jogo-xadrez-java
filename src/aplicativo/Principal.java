@@ -23,14 +23,14 @@ public class Principal {
 			try {
 				UI.limparTela();
 				UI.printPartida(partida, capturada);
-				System.out.println("\nOrigem:");
+				System.out.print("\nOrigem: ");
 				PosicaoXadrez origem = UI.lerPosicao(sc);
 				
 				boolean[][] possiveisDestinos = partida.possiveisMovimentos(origem);
 				UI.limparTela();
 				UI.printTabuleiro(partida.getPecas(), possiveisDestinos);
 				
-				System.out.println("\nDestino:");
+				System.out.print("\nDestino: ");
 				PosicaoXadrez destino = UI.lerPosicao(sc);
 				
 				PecaXadrez captura = partida.mover(origem, destino);

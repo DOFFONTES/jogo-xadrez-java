@@ -27,7 +27,7 @@ public class PosicaoXadrez {
 		return new Posicao(8 - linha, coluna - 'a');
 	}
 	protected static PosicaoXadrez inversao(Posicao posicao) {
-		return new PosicaoXadrez((char)('a' - posicao.getColuna()), 8 - posicao.getLinha());
+		return new PosicaoXadrez((char)('a' + posicao.getColuna()), 8 - posicao.getLinha());
 	}
 	
 	@Override
