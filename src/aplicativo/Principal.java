@@ -18,7 +18,7 @@ public class Principal {
 		PartidaXadrez partida = new PartidaXadrez();
 		List<PecaXadrez> capturada = new ArrayList<>();
 		
-		while(true) {
+		while(!partida.getCheckMate()) {
 			
 			try {
 				UI.limparTela();
@@ -47,6 +47,8 @@ public class Principal {
 				sc.nextLine();
 			}
 		}
+		UI.limparTela();
+		UI.printPartida(partida, capturada);		
 		
 	}
 
