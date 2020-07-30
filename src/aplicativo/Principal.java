@@ -38,6 +38,11 @@ public class Principal {
 				if(captura != null) {
 					capturada.add(captura);
 				}
+				if(partida.getPromocao() != null) {
+					System.out.print("Peça que sera promovida(C/T/B/R): ");
+					String tipo = sc.nextLine();
+					partida.substituirPeca(tipo);
+				}
 				
 			}catch(XadrezExcecao e) {
 				System.out.println(e.getMessage());

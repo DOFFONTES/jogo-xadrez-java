@@ -1,5 +1,6 @@
 package xadrez;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class PartidaXadrez {
 	private boolean check;
 	private boolean checkMate;
 	private PecaXadrez enPassant;
+	private PecaXadrez promocao;
 	
 	private List<Peca> pecasTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -47,6 +49,9 @@ public class PartidaXadrez {
 	}
 	public PecaXadrez getEnPassant() {
 		return enPassant;
+	}
+	public PecaXadrez getPromocao() {
+		return promocao;
 	}
 	
 
@@ -82,6 +87,13 @@ public class PartidaXadrez {
 		
 		PecaXadrez pecaMovimentada = (PecaXadrez) tabuleiro.peca(desti);
 		
+		promocao = null;
+		if(pecaMovimentada instanceof Peao) {
+			if((pecaMovimentada.getCor() == Cor.BRANCO && desti.getLinha() == 0) || (pecaMovimentada.getCor() == Cor.PRETO && desti.getLinha() == 7)) {
+				promocao = (PecaXadrez) tabuleiro.peca(desti);
+			}
+		}
+		
 		check = (testeCheck(oponente(jogadorAtual))) ? true : false;
 		
 		if(testeCheckMate(oponente(jogadorAtual))) {
@@ -97,6 +109,31 @@ public class PartidaXadrez {
 		}
 			
 		return (PecaXadrez)pecaCapturada;		
+	}
+	
+	public PecaXadrez substituirPeca(String tipo) {
+		if(promocao == null) {
+			throw new IllegalStateException("Peca nao pode ser promovida");
+		}
+		if (!tipo.equals("C") && !tipo.equals("T") && !tipo.equals("R") && !tipo.equals("B")) {
+			throw new InvalidParameterException("Tipo de promocao invalida");
+		}
+		Posicao pos = promocao.getPosicaoXadrez().conversao();
+		Peca p = tabuleiro.removePeca(pos);
+		pecasTabuleiro.remove(p);
+		
+		PecaXadrez novaPeca = novaPeca(tipo, promocao.getCor());
+		tabuleiro.colocarPeca(novaPeca, pos);
+		pecasTabuleiro.add(novaPeca);
+				
+		return novaPeca;
+	}
+	
+	private PecaXadrez novaPeca(String tipo, Cor cor) {
+		if(tipo.equals("C")) return new Cavalo(tabuleiro, cor);
+		if(tipo.equals("T")) return new Torre(tabuleiro, cor);
+		if(tipo.equals("R")) return new Rainha(tabuleiro, cor);
+		return new Bispo(tabuleiro, cor);
 	}
 	
 	private Peca movendo(Posicao origem, Posicao destino) {
