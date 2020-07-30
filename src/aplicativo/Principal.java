@@ -39,8 +39,12 @@ public class Principal {
 					capturada.add(captura);
 				}
 				if(partida.getPromocao() != null) {
-					System.out.print("Peça que sera promovida(C/T/B/R): ");
-					String tipo = sc.nextLine();
+					System.out.print("Peca que sera promovida(C/T/B/R): ");
+					String tipo = sc.nextLine().toUpperCase();
+					while(!tipo.equals("C") && !tipo.equals("T") && !tipo.equals("R") && !tipo.equals("B")) {
+						System.out.print("Opcao invalida, favor digitar novamente. Peca que sera promovida(C/T/B/R): ");
+						tipo = sc.nextLine().toUpperCase();
+					}
 					partida.substituirPeca(tipo);
 				}
 				

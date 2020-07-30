@@ -10,7 +10,7 @@ public class PosicaoXadrez {
    
    public PosicaoXadrez(char coluna, int linha) {
 	   if(coluna < 'a'  || coluna > 'h' || linha < 1 || linha > 8) {
-		   throw new XadrezExcecao("Os valores válidos vão de a1 a h8");
+		   throw new XadrezExcecao("Os valores validos sao de a1 a h8");
 	   }
 	   this.coluna = coluna;
 	   this.linha = linha;

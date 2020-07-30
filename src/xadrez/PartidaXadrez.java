@@ -1,6 +1,5 @@
 package xadrez;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,6 +90,7 @@ public class PartidaXadrez {
 		if(pecaMovimentada instanceof Peao) {
 			if((pecaMovimentada.getCor() == Cor.BRANCO && desti.getLinha() == 0) || (pecaMovimentada.getCor() == Cor.PRETO && desti.getLinha() == 7)) {
 				promocao = (PecaXadrez) tabuleiro.peca(desti);
+				promocao = substituirPeca("R");
 			}
 		}
 		
@@ -116,7 +116,7 @@ public class PartidaXadrez {
 			throw new IllegalStateException("Peca nao pode ser promovida");
 		}
 		if (!tipo.equals("C") && !tipo.equals("T") && !tipo.equals("R") && !tipo.equals("B")) {
-			throw new InvalidParameterException("Tipo de promocao invalida");
+			return promocao;
 		}
 		Posicao pos = promocao.getPosicaoXadrez().conversao();
 		Peca p = tabuleiro.removePeca(pos);
@@ -222,7 +222,7 @@ public class PartidaXadrez {
 	
 	private void validarPosicaoOrigem(Posicao posicao) {
 		if(!tabuleiro.temPeca(posicao)) {
-			throw new XadrezExcecao("Não existe peça nessa posição");
+			throw new XadrezExcecao("Nao existe peca nessa posicao");
 		}
 		if(jogadorAtual != ((PecaXadrez) tabuleiro.peca(posicao)).getCor()) {
 			throw new XadrezExcecao("Peca escolhida nao e sua");
@@ -234,7 +234,7 @@ public class PartidaXadrez {
 	
 	private void validarPosicaoDestino(Posicao origem, Posicao destino) {
 		if(!tabuleiro.peca(origem).possivelMovimento(destino)) {
-			throw new XadrezExcecao("A peca escolhida nao pode movintar para o destino escolhido");
+			throw new XadrezExcecao("A peca escolhida nao pode se movintar para o destino escolhido");
 		}
 	}
 	
